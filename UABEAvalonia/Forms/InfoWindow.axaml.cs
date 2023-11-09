@@ -29,7 +29,7 @@ namespace UABEAvalonia
         //searching
         private string searchText;
         private int searchStart;
-        private bool searchDown;
+        private SearchDirection searchDirection;
         private bool searchCaseSensitive;
         private bool searching;
 
@@ -110,7 +110,7 @@ namespace UABEAvalonia
 
             searchText = "";
             searchStart = 0;
-            searchDown = false;
+            searchDirection = SearchDirection.Both;
             searchCaseSensitive = true;
             searching = false;
 
@@ -160,7 +160,7 @@ namespace UABEAvalonia
 
                 searchText = res.text;
                 searchStart = selectedIndex != -1 ? selectedIndex : 0;
-                searchDown = res.isDown;
+                searchDirection = res.direction;
                 searchCaseSensitive = res.caseSensitive;
                 searching = true;
                 NextNameSearch();
@@ -1005,7 +1005,7 @@ namespace UABEAvalonia
             if (searching)
             {
                 List<AssetInfoDataGridItem> itemList = GetDataGridItemsSorted(dgcv);
-                if (searchDown)
+                if (searchDirection != SearchDirection.Up)
                 {
                     for (int i = searchStart; i < itemList.Count; i++)
                     {
@@ -1019,8 +1019,12 @@ namespace UABEAvalonia
                             break;
                         }
                     }
+
+                    if (searchDirection == SearchDirection.Both)
+                        searchDirection = SearchDirection.Up;
                 }
-                else
+                
+                if (!foundResult && searchDirection != SearchDirection.Down)
                 {
                     for (int i = searchStart; i >= 0; i--)
                     {
@@ -1043,7 +1047,6 @@ namespace UABEAvalonia
 
                 searchText = "";
                 searchStart = 0;
-                searchDown = false;
                 searching = false;
                 return;
             }

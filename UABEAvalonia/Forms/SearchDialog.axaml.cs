@@ -40,7 +40,14 @@ namespace UABEAvalonia
         private void ReturnAssetToSearch()
         {
             if (boxName.Text != null && boxName.Text != string.Empty)
-                Close(new SearchDialogResult(true, boxName.Text, rdoSearchDown.IsChecked ?? false, chkCaseSensitive.IsChecked ?? false));
+            {
+                var direction = rdoSearchUp.IsChecked.GetValueOrDefault()
+                    ? SearchDirection.Up
+                    : rdoSearchDown.IsChecked.GetValueOrDefault()
+                        ? SearchDirection.Down
+                        : SearchDirection.Both;
+                Close(new SearchDialogResult(true, boxName.Text, direction, chkCaseSensitive.IsChecked ?? false));
+            }
             else
                 Close(new SearchDialogResult(false));
         }
@@ -49,20 +56,26 @@ namespace UABEAvalonia
     {
         public bool ok;
         public string text;
-        public bool isDown;
+        public SearchDirection direction;
         public bool caseSensitive;
         public SearchDialogResult(bool ok)
         {
             this.ok = ok;
             this.text = "";
-            this.isDown = false;
+            this.direction = SearchDirection.Both;
         }
-        public SearchDialogResult(bool ok, string text, bool isDown, bool caseSensitive)
+        public SearchDialogResult(bool ok, string text, SearchDirection direction, bool caseSensitive)
         {
             this.ok = ok;
             this.text = text;
-            this.isDown = isDown;
+            this.direction = direction;
             this.caseSensitive = caseSensitive;
         }
+    }
+    public enum SearchDirection
+    {
+        Up,
+        Down,
+        Both
     }
 }

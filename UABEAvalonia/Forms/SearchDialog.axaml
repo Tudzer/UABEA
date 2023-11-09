@@ -23,7 +23,8 @@
       <Label Grid.Column="0" Grid.Row="1">Direction</Label>
       <StackPanel Orientation="Horizontal" Spacing="10" Grid.Column="1" Grid.Row="1">
         <RadioButton GroupName="rdoSearchDir" Name="rdoSearchUp">Up</RadioButton>
-        <RadioButton GroupName="rdoSearchDir" IsChecked="True" Name="rdoSearchDown">Down</RadioButton>
+        <RadioButton GroupName="rdoSearchDir" Name="rdoSearchDown">Down</RadioButton>
+        <RadioButton GroupName="rdoSearchDir" IsChecked="True" Name="rdoSearchBoth">Both</RadioButton>
       </StackPanel>
       <Label Grid.Column="0" Grid.Row="2">Case sensitive</Label>
       <CheckBox Grid.Column="1" Grid.Row="2" Name="chkCaseSensitive"></CheckBox>

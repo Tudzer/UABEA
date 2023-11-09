@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -79,6 +80,7 @@ namespace UABEAvalonia
             btnRemove.Click += BtnRemove_Click;
             btnPlugin.Click += BtnPlugin_Click;
             dataGrid.SelectionChanged += DataGrid_SelectionChanged;
+            dataGrid.Sorting += DataGrid_Sorting;
             Closing += InfoWindow_Closing;
 
             ignoreCloseEvent = false;
@@ -429,6 +431,15 @@ namespace UABEAvalonia
                 boxFileId.Text = gridItem.FileID.ToString();
                 boxType.Text = $"0x{gridItem.TypeID:X8} ({gridItem.Type})";
             }
+        }
+
+        private void DataGrid_Sorting(object? sender, EventArgs e)
+        {
+            if (dataGrid.SelectedItems.Count > 1) return;
+            Dispatcher.UIThread.InvokeAsync(() =>
+            {
+              dataGrid.ScrollIntoView(dataGrid.SelectedItem, null);
+            }, DispatcherPriority.ContextIdle);
         }
 
         private async void InfoWindow_Closing(object? sender, CancelEventArgs e)
